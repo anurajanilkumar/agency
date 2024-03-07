@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Works | manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    {% include "manager/manager-nav.html" %}
+    <div class="container mt-5">
+        <h3 class="text-center">Works to assign</h3>
+        <div class="row">
+            {% if bookings == None %}
+            <p class="text-center alert alert-danger">No works to be assigned</p>
+            {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date of Purchase</th>
+                        <th scope="col">Booking ID</th>
+                        <th scope="col">Booking Type</th>
+                        <th scope="col">Assign Work</th>
+                        <!-- <th scope="col">Email Address</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{booking.created_at}}</td>
+                        <td>{{booking.id}}</td>
+                        <td>{{booking.booking_type}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-success dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Assign To
+                                </button>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="number" class="d-none" name="id" id="id" value="{{booking.id}}">
+                                    <ul class="dropdown-menu">
+                                        {% for staff in staffs%}
+                                        <li>
+                                            <button class="dropdown-item" type="submit" name="staff" value="{{ staff.id }}" >{{ staff.first_name }} {{ staff.last_name }}</button>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </form>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        <h3 class="text-center">Assigned Work</h3>
+        <div class="row">
+            {% if works == None %}
+            <p class="text-center alert alert-danger">No works has been assigned</p>
+            {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Work Assigned At</th>
+                        <th scope="col">Date of Purchase</th>
+                        <th scope="col">Booking ID</th>
+                        <th scope="col">Assigned To</th>
+                        <th scope="col">Work status</th>
+                        <th scope="col">Work Completed At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for work in works %}
+                    <tr>
+                        <td>{{ work.created_at }}</td>
+                        <td>{{work.booking_id.created_at}}</td>
+                        <td>{{work.booking_id.id}}</td>
+                        <td>{{ work.staff_id.first_name }} {{ work.staff_id.last_name }}</td>
+                        <td>{{ work.work_status }}</td>
+                        <td>{{ work.work_complete_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
