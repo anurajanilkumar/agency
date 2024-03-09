@@ -81,6 +81,12 @@ def signUp(request):
     branches = Branch.objects.all()[1:]
     return render(request,'signup.html',{'branches':branches})
 
+def logout(request):
+    request.session.clear()
+    return redirect("Index")
+
+        
+
 #______________________admin_page______________________
 
 def viewAdmin(request):
@@ -89,8 +95,10 @@ def viewAdmin(request):
         return render(request,'admin/admin.html')
     else:
         return redirect('loginpage')
+    
 
 def viewAndGroup(request):
+    
     if request.method == 'POST':
         name = request.POST['group-name']
         Group.objects.create(group_name = name)
@@ -127,9 +135,15 @@ def viewBranch(request):
 def viewBooking(request):
 
     bookings = Bookings.objects.all()
-    return render(request, 'admin/bookings.html',{'bookings':bookings})
-
-
+    branches = Branch.objects.all()
+    filter = None
+    if request.method == 'POST' and request.POST['filter-branch'] != "":
+        id = request.POST['filter-branch']
+        bookings = Bookings.objects.filter(product_id__branch_id = id)
+        bookings = bookings.union(Bookings.objects.filter(service_id__branch_id = id))
+        filter = branches.get(id = id)
+        print(filter.branch_name)
+    return render(request, 'admin/bookings.html',{'bookings':bookings, 'branches':branches, 'filter': filter})
 
 #________________________manager_page________________________
 
