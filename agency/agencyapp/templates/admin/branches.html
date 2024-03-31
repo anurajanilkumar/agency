@@ -28,10 +28,10 @@
                 <tbody>
                   {% for branch in branches %}
                   <tr>
-                    <td>{{branch.id}}</td>
-                    <td>{{branch.branch_name}}</td>
-                    <td>{{branch.branch_location}}</td>
-                    <td>{{branch.manager_id.email}}</td>
+                    <td>{{branch.branch_id.id}}</td>
+                    <td>{{branch.branch_id.branch_name}}</td>
+                    <td>{{branch.branch_id.branch_location}}</td>
+                    <td>{{branch.email}}</td>
                     <td>
                       {% if branch.id != 1 %}
                       <a href="{% url 'delete-branch' branch.id %}" class="btn btn-sm btn-danger">Delete</a>

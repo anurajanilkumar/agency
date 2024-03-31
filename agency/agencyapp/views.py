@@ -128,8 +128,8 @@ def deleteBranch(request, id):
 
 
 def viewBranch(request):
-
-    branches = Branch.objects.all()
+    group_id = Group.objects.get(group_name = 'MANAGER')
+    branches = User.objects.filter(group_id = group_id)
     return render(request, 'admin/branches.html',{'branches':branches})
 
 def viewBooking(request):

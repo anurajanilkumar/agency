@@ -16,23 +16,25 @@
             <form method="post" action="">
                 {% csrf_token %}
                 <h3>Create A Complaint</h3>
+                
                 <div class="mb-3 col-7">
                     <label for="name" class="form-label">Subject</label>
-                    <input type="text" name="name" class="form-control" id="name">
+                    <input type="text" name="name" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3 col-7">
                     <label for="desc" class="form-label">Enter your complaint details</label>
-                    <textarea name="desc" id="desc" class="form-control" cols="30" rows="6"></textarea>
+                    <textarea name="desc" id="desc" class="form-control" cols="30" rows="6" required></textarea>
                 </div>
                 <div class="mb-3 col-7">
                     <label for="booking" class="form-label">Select which order you have complaint</label>
-                    <select class="form-select" name="booking" id="booking" aria-label="Select booking">
-                        <option selected>Select your Order</option>
+                    <div id="bookingHelp" class="form-text">Please wait for your order to start proccessing to create a complaint about it <br> Order with status <b>PENDING</b> will not be shown here</div>
+                    <select class="form-select" name="booking" id="booking" aria-label="Select booking" required>
+                        <option value="">Select your Order</option>
                         {% for booking in bookings %}
                         <option value="{{booking.id}}">({{booking.id}})-{{ booking.product_id.product_name }}{{ booking.service_id.service_name }}</option>
                         {% endfor %}
                     </select>
-                    <div id="bookingHelp" class="form-text">Orders in PENDING status will not be shown</div>
+                    
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
